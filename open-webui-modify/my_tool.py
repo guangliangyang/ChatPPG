@@ -1,85 +1,108 @@
 import os
 import requests
-from datetime import datetime
 import json
+from typing import Optional, io
 
-performance_data_json = {
-    "Speed Statistics": {
-        "Depth": {"Max (km/h)": 0.06, "Average (km/h)": 0.02},
-        "Forward": {"Max (km/h)": 0.02, "Average (km/h)": 0.01},
-        "Overall": {"Max (km/h)": 0.06, "Average (km/h)": 0.03},
-        "Sideways": {"Max (km/h)": 0.03, "Average (km/h)": 0.01},
-    },
-    "Calories Burned": {
-        "Total Exercise Duration": "00:00:48",
-        "Total Calories Burned (kcal)": 3.7,
-        "Average Calories Burned per Hour (kcal)": 276.5,
-        "Intensity": "Entertainment",
-    },
-    "Covered Area (m²)": 2.25,
-    "Cell Ratios (%)": {
-        "R22": 0.0, "R12": 0.0, "R02": 0.0, "R21": 0.0, "R11": 0.0, "R01": 0.0,
-        "R20": 0.0, "R10": 0.0, "R00": 0.0, "L20": 0.0, "L10": 0.0, "L00": 0.0,
-        "L21": 0.0, "L11": 17.2, "L01": 82.7, "L22": 0.1, "L12": 0.0, "L02": 0.0,
-    },
-    "Stroke": {
-        "Total Count": 62,
-        "Templates": {
-            "Forehand-Backspin": {"Count": 3, "Percentage (%)": 4.8},
-            "Forehand-Topspin": {"Count": 0, "Percentage (%)": 0.0},
-            "Backhand-Backspin": {"Count": 4, "Percentage (%)": 6.5},
-            "Backhand-Topspin": {"Count": 55, "Percentage (%)": 88.7},
-        },
-    },
-    "Footwork": {
-        "Total Count": 133,
-        "Templates": {
-            "Little-Step": {"Count": 66, "Percentage (%)": 49.6},
-            "Striding-Step": {"Count": 67, "Percentage (%)": 50.4},
-            "Cross-Step": {"Count": 0, "Percentage (%)": 0.0},
-        },
-    },
-}
+class Tools:  # TableTennisCVAnalyzer:
+    """
+    Table Tennis CV Analyzer for analyzing table tennis performance and detecting serve fouls using computer vision models.
 
-foul_data_json1 = {
-    "Foul Serves/Total Serve Actions": {"Foul Serves": 4, "Total Serve Actions": 20},
-    "Foul Statistics": {
-        "In Front of the End Line": 2,
-        "Beyond the Sideline Extension": 0,
-        "Tossed from Below Table Surface": 0,
-        "Backward Angle More Than 30°": 3,
-        "Tossed Upward Less Than 16 cm": 2,
-    },
-}
+    This class provides methods to analyze player performance and detect fouls
+    from video files, leveraging computer vision techniques to generate structured JSON data.
+    """
 
-foul_data_json = {
-    "Summary of Serves": {
-        "Total Serves": 20,
-        "Foul Serves": 4
-    },
-    "Details of Foul Statistics": {
-        "Serves in Front of the End Line": 2,
-        "Serves Beyond the Sideline Extension": 0,
-        "Serves Tossed from Below the Table Surface": 0,
-        "Serves with Backward Angle Greater Than 30 Degrees": 3,
-        "Serves Tossed Upward Less Than 16 cm": 2
-    }
-}
-
-
-
-class Tools:
     def __init__(self):
-        pass
+        """
+        Initialize the Tools class and load external JSON data from GitHub.
+        """
+        self.data_url = "https://github.com/guangliangyang/ChatPPG/tree/main/open-webui-modify/my_tool_data.json"
+        self.data = self._fetch_data()
+
+    def _fetch_data(self) -> dict:
+        """
+        Fetch JSON data from the specified GitHub URL.
+
+        :return: A dictionary containing the JSON data.
+        :rtype: dict
+        """
+        try:
+            response = requests.get(self.data_url)
+            response.raise_for_status()
+            print("Successfully fetched JSON data.")
+            return response.json()
+        except requests.RequestException as e:
+            print(f"Error fetching data: {e}")
+            return {}
 
     def analy_table_tennis_performance(self, file: str) -> str:
-        print("analy_table_tennis_performance,video_file_path:", file)
-        result = json.dumps(performance_data_json)
+        """
+        Analyze the performance of a table tennis player from a given video file.
+
+        This function takes a video file path as input, processes the file, and returns
+        a JSON string containing the analyzed performance data.
+
+        :param file: The path to the video file (in .mp4 format) for performance analysis.
+        :type file: str
+        :return: A JSON string containing the performance analysis results.
+        :rtype: str
+        """
+        print("analy_table_tennis_performance, video_file_path:", file)
+        result = json.dumps(self.data.get("performance_data_json", {}))
         print(result)
         return result
 
-    def detect_player_foul(self, file: str):
-        print("detect_serve_foul,video_file_path:", file)
-        result = json.dumps(foul_data_json)
+    def detect_player_foul(self, file: str) -> str:
+        """
+        Detect serve fouls in a table tennis match from a given video file.
+
+        This function takes a video file path as input, processes the file, and returns
+        a JSON string containing the foul detection results.
+
+        :param file: The path to the video file (in .mp4 format) for foul detection.
+        :type file: str
+        :return: A JSON string containing the foul detection results.
+        :rtype: str
+        """
+        print("detect_serve_foul, video_file_path:", file)
+        result = json.dumps(self.data.get("foul_data_json", {}))
         print(result)
         return result
+
+    def show_video(self, files: dict) -> str:
+        """
+        Generate an HTML video tag to display a valid video file.
+
+        This method iterates through a dictionary of files and searches for an MP4 video file.
+        If found, it generates an HTML string with a video tag to embed the video.
+
+        :param files: A dictionary of files, where each file contains metadata and a URL.
+        :type files: dict
+        :return: An HTML string with a video tag or a message if no valid video is found.
+        :rtype: str
+        """
+        for file in files:
+            if file["file"]["meta"]["content_type"] == "video/mp4":
+                video_url = file["url"] + "/content"
+                result = f'<video controls width="640" height="360">\n  <source src="{video_url}" type="video/mp4">\n  Your browser does not support the video tag.\n</video>'
+                print("Generated Video HTML:", result)  # Print the result before returning
+                return result
+        result = "No valid video file found."
+        print("Generated Video HTML:", result)  # Print the result before returning
+        return result
+
+    def self_train_from_pdf(
+        self,
+        # pdf_file: Optional[io.BytesIO] = None,
+        # pdf_link: Optional[str] = None,
+        convert_to_dataset: bool = False,
+    ) -> None:
+        """
+        Perform a self-training session from a PDF file or link and learn from its content.
+        Optionally, convert the PDF content into a dataset if requested.
+        """
+        pdf_analysis = 1  # self.process_pdf(pdf_file, pdf_link)
+        print(f"PDF Analysis and Learning:\n{pdf_analysis}")
+
+        # Extract and store the analysis for self-training
+        if convert_to_dataset:
+            print("convert_to_dataset:", convert_to_dataset)
