@@ -1,7 +1,34 @@
 [
-  {
-    "instruction": "hi",
-    "input": "",
-    "output": "Hello! today?"
-  }
+   {
+	"instruction": "Determine the player's skill level based on performance metrics. Max = 0.02 km/h, Average = 0.01 km/h\n   - Overall: Max = 0.06 km/h, Average = 0.03 km/h\n   ...",
+	"input": "",
+	"output": "The player's skill level is categorized as Beginner, and playing style is identified as a Backhand-Dominant Attacker with limited technical variety. This conclusion is based on the following detailed analysis and theoretical underpinnings..."
+},
+{
+	"instruction": " For a Beginner player with a Backhand-Dominant Attacker style and limited technical variety, provide a training and improvement plan.",
+	"input": "",
+"output": " ### Professional Table Tennis Training and Improvement Plan:\n\n#### 1. Objectives:\n1. Enhance the diversity and stability of backhand techniques.\n2. Strengthen forehand skills to achieve a balanced attack and defense.\n3. Improve footwork and court coverage to handle higher-intensity matches.\n\n#### 2. Training Content:\n\n**1. Backhand Technique Improvement:**\n   - **Backhand Power Training:**\n     - Use multi-ball drills..."
+},
+{
+	"instruction": " For an Advanced Backhand-Dominant Attacker player, provide strategies for competition scenarios. ",
+	"input": "",
+"output": "### Competition Strategies for an Advanced Backhand-Dominant Attacker:\n\n#### 1. Strengths to Leverage:\n1. **Backhand Dominance**:\n   - Use quick and aggressive backhand topspin strokes to control the rally, especially in mid-table exchanges.\n   - Take advantage..."
+},
+{
+	"instruction": " For an Advanced Backhand-Dominant Attacker player, provide strategies for competition scenarios. ",
+	"input": "",
+"output": "### Competition Strategies for an Advanced Backhand-Dominant Attacker:\n\n#### 1. Strengths to Leverage:\n1. **Backhand Dominance**:\n   - Use quick and aggressive backhand topspin strokes to control the rally, especially in mid-table exchanges.\n   - Take advantage..."
+},
+{
+	"instruction": " For an Advanced Backhand-Dominant Attacker player, provide strategies for competition scenarios. ",
+	"input": "",
+"output": "### Competition Strategies for an Advanced Backhand-Dominant Attacker:\n\n#### 1. Strengths to Leverage:\n1. **Backhand Dominance**:\n   - Use quick and aggressive backhand topspin strokes to control the rally, especially in mid-table exchanges.\n   - Take advantage..."
+}
 ]
+
+
+//please use the following template to create some table tennis Q/A traing data, include how to evaluate player performance with exact json data when instruction is json data as following, what's the disadvantage of this player, how to improve and make some exact train plan for player.   {
+//    "instruction": "question1...",
+//    "input": "",
+//    "output": "llms answers..."
+//  }, keep input field as empty.

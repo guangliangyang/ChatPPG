@@ -32,3 +32,23 @@ llamafactory-cli train \
     --lora_alpha 16 \
     --lora_dropout 0 \
     --lora_target all
+
+
+
+    --stage sft \
+    --model_name_or_path meta-llama/Meta-Llama-3.1-8B \
+    --finetuning_type lora \
+    --template LLama3 \
+    --cutoff_len 2048 \
+    --learning_rate 5e-05 \
+    --num_train_epochs 186.0 \
+    --max_samples 100000 \
+    --per_device_train_batch_size 1 \
+    --gradient_accumulation_steps 8 \
+    --lr_scheduler_type cosine \
+    --max_grad_norm 1.0 \
+    --fp16 True \
+    --lora_rank 8 \
+    --lora_alpha 16 \
+    --lora_dropout 0 \
+    --lora_target all
