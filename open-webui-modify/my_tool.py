@@ -15,7 +15,8 @@ class Tools:  # TableTennisCVAnalyzer:
         """
         Initialize the Tools class and load external JSON data from GitHub.
         """
-        self.data_url = "https://github.com/guangliangyang/ChatPPG/tree/main/open-webui-modify/my_tool_data.json"
+        self.data_url = "https://drive.google.com/uc?export=download&id=1T8IeVIJ8jUSWgVnJFr_Y9DGA7QnuYF37"
+        #https://sites.google.com/site/gdocs2direct/
         self.data = self._fetch_data()
 
     def _fetch_data(self) -> dict:
@@ -28,10 +29,14 @@ class Tools:  # TableTennisCVAnalyzer:
         try:
             response = requests.get(self.data_url)
             response.raise_for_status()
-            print("Successfully fetched JSON data.")
-            return response.json()
+            print("Raw Response Content:", response.text)  # Print the raw response for debugging
+            return response.json()  # Attempt to parse JSON
         except requests.RequestException as e:
-            print(f"Error fetching data: {e}")
+            print(f"Request error: {e}")
+            return {}
+        except json.JSONDecodeError as e:
+            print(f"JSON decode error: {e}")
+            print("Response Content (Not JSON):", response.text)  # Print the invalid content
             return {}
 
     def analy_table_tennis_performance(self, file: str) -> str:
@@ -47,7 +52,9 @@ class Tools:  # TableTennisCVAnalyzer:
         :rtype: str
         """
         print("analy_table_tennis_performance, video_file_path:", file)
-        result = json.dumps(self.data.get("performance_data_json", {}))
+        cv_data = self.data.get("performance_data_json", {})
+        print("get the remote data:",cv_data)
+        result = json.dumps(cv_data)
         print(result)
         return result
 
@@ -64,7 +71,9 @@ class Tools:  # TableTennisCVAnalyzer:
         :rtype: str
         """
         print("detect_serve_foul, video_file_path:", file)
-        result = json.dumps(self.data.get("foul_data_json", {}))
+        cv_data = json.dumps(self.data.get("foul_data_json", {}))
+        print("get the remote data:",cv_data)
+        result = json.dumps(cv_data)
         print(result)
         return result
 
@@ -106,3 +115,4 @@ class Tools:  # TableTennisCVAnalyzer:
         # Extract and store the analysis for self-training
         if convert_to_dataset:
             print("convert_to_dataset:", convert_to_dataset)
+
