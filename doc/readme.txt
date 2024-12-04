@@ -29,7 +29,7 @@
     dmin Panel > Settings > Connections ->Manage OpenAI API Connections
     http://host.docker.internal:9099  0p3n-w3bu!
 
-    add my_pipeline
+    add my_pipeline (just for logging)
 
 4. model setting
     base model: llama3.2
@@ -58,7 +58,7 @@ You will get a file from the user or ask a user politely for a picture  to analy
     ---------------------------------------------------------------------------
 
 
-5. Tools
+5. Tools (most important)
     add my_tool.py
 
 6. update dataloader, in docker file, and restart docker container
@@ -84,5 +84,10 @@ You will get a file from the user or ask a user politely for a picture  to analy
 
  please analysis the player performance
  please detect serve foul
+
+Summarize performance, highlight weaknesses, and suggest areas for improvement
+
+Determine the skill level of the player based on the above data. Give me the exact numerical reason and proof or evidence
+
 
 

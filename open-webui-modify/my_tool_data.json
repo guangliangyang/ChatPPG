@@ -1,30 +1,30 @@
 {
     "performance_data_json": {
         "Speed Statistics": {
-            "Depth": {"Max (km/h)": 0.06, "Average (km/h)": 0.02},
-            "Forward": {"Max (km/h)": 0.02, "Average (km/h)": 0.01},
-            "Overall": {"Max (km/h)": 0.06, "Average (km/h)": 0.03},
-            "Sideways": {"Max (km/h)": 0.03, "Average (km/h)": 0.01}
+            "Depth": {"Max (km/h)": 0.6, "Average (km/h)": 0.2},
+            "Forward": {"Max (km/h)": 0.2, "Average (km/h)": 0.1},
+            "Overall": {"Max (km/h)": 0.6, "Average (km/h)": 0.3},
+            "Sideways": {"Max (km/h)": 0.3, "Average (km/h)": 0.1}
         },
         "Calories Burned": {
             "Total Exercise Duration": "00:00:48",
-            "Total Calories Burned (kcal)": 3.7,
-            "Average Calories Burned per Hour (kcal)": 276.5,
-            "Intensity": "Entertainment"
+            "Total Calories Burned (kcal)": 37,
+            "Average Calories Burned per Hour (kcal)": 2765,
+            "Intensity": "Vigorous exercise"
         },
-        "Covered Area (m²)": 2.25,
+        "Covered Area (m²)": 22.5,
         "Cell Ratios (%)": {
-            "R22": 0.0, "R12": 0.0, "R02": 0.0, "R21": 0.0, "R11": 0.0, "R01": 0.0,
-            "R20": 0.0, "R10": 0.0, "R00": 0.0, "L20": 0.0, "L10": 0.0, "L00": 0.0,
-            "L21": 0.0, "L11": 17.2, "L01": 82.7, "L22": 0.1, "L12": 0.0, "L02": 0.0
+            "R22": 4.0, "R12": 4.0, "R02": 4.0, "R21": 4.0, "R11": 4.0, "R01": 4.0,
+            "R20": 4.0, "R10": 4.0, "R00": 3.0, "L20": 3.0, "L10": 3.0, "L00": 3.0,
+            "L21": 3.0, "L11": 10.2, "L01": 22.7, "L22": 3.1, "L12": 3.0, "L02": 3.0
         },
         "Stroke": {
             "Total Count": 62,
             "Templates": {
-                "Forehand-Backspin": {"Count": 3, "Percentage (%)": 4.8},
-                "Forehand-Topspin": {"Count": 0, "Percentage (%)": 0.0},
-                "Backhand-Backspin": {"Count": 4, "Percentage (%)": 6.5},
-                "Backhand-Topspin": {"Count": 55, "Percentage (%)": 88.7}
+                "Forehand-Backspin": {"Count": 20, "Percentage (%)": 24},
+                "Forehand-Topspin": {"Count": 21, "Percentage (%)": 26},
+                "Backhand-Backspin": {"Count": 22, "Percentage (%)": 26},
+                "Backhand-Topspin": {"Count": 18, "Percentage (%)": 23.7}
             }
         },
         "Footwork": {
