@@ -80,14 +80,13 @@ You will get a file from the user or ask a user politely for a picture  to analy
 
 10. prompt
 
+1) please analysis the player performance
 
+2) Summarize performance, highlight weaknesses, and suggest areas for improvement
 
- please analysis the player performance
- please detect serve foul
+3) Determine the skill level of the player based on the above data. Give me the exact numerical reason and proof or evidence
 
-Summarize performance, highlight weaknesses, and suggest areas for improvement
-
-Determine the skill level of the player based on the above data. Give me the exact numerical reason and proof or evidence
+4) please detect serve foul
 
 
 
