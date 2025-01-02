@@ -2,9 +2,21 @@ import os
 from pathlib import Path
 import shutil
 
-
 def process_pingpong_images():
-    # Get all image files from the Img directory
+    # Mapping of zone indices to zone names
+    zone_mapping = {
+        1: "Front-Left",
+        2: "Front-Center",
+        3: "Front-Right",
+        4: "Middle-Left",
+        5: "Middle-Center",
+        6: "Middle-Right",
+        7: "Back-Left",
+        8: "Back-Center",
+        9: "Back-Right"
+    }
+
+    # Get all image files from the Img-original directory
     img_dir = Path("Img-original")
     output_dir = Path("sd-dataset-hyperNetwork")
 
@@ -22,6 +34,8 @@ def process_pingpong_images():
         serve_time = int(name_parts[1])
         zone_index = int(name_parts[2])
 
+        # Get the zone name from the mapping
+        zone_name = zone_mapping.get(zone_index, "Unknown Zone")
 
         # Create new filename base (without extension)
         new_filename_base = f"{serve_time}-serve-which-pingpong-ball-landed-in-zone-{zone_index}"
@@ -30,21 +44,19 @@ def process_pingpong_images():
         shutil.copy2(img_file, output_dir / f"{new_filename_base}.png")
 
         # Create detailed prompt for individual txt file
-        detailed_prompt = f"pingpong serve, table, pingpong table, white pingpong ball,no human,ball landed on zone {zone_index} of left pingpong table"
+        detailed_prompt = f"pingpong serve, table, pingpong table, white pingpong ball, no human, ball landed on {zone_name} of left pingpong table"
 
         # Create matching txt file
         txt_path = output_dir / f"{new_filename_base}.txt"
         with open(txt_path, 'w') as f:
             f.write(detailed_prompt)
 
-
-    print(f"Created {len(prompt_entries)} image-text pairs in {output_dir}")
-
+    print(f"Created {len(image_files)} image-text pairs in {output_dir}")
 
 if __name__ == "__main__":
     try:
         process_pingpong_images()
     except FileNotFoundError:
-        print("Error: 'Img' directory not found. Please make sure it exists in the current working directory.")
+        print("Error: 'Img-original' directory not found. Please make sure it exists in the current working directory.")
     except Exception as e:
         print(f"An error occurred: {str(e)}")

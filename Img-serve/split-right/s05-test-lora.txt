@@ -1,1 +1,4 @@
 <lora:pingpong:1>,pingpong serve,table,pingpong table,white pingpong ball,no human,ball landed on zone 4 of left pingpong table,
+
+<lora:pingpong:1>,pingpong serve,table,pingpong table,white pingpong ball,no human, ball landed on Middle-Left of left pingpong table,
+
