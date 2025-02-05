@@ -90,7 +90,7 @@ def predict(model, history):
 
 # 测试
 history = [0, 1, 2, 0, 1]  # 假设最近五步为 石头->剪刀->布->石头->剪刀
-#history ="458744544776975774537557487768568646478556"  # 假设最近五步为 石头->剪刀->布->石头->剪刀
+#history ="458744544776975774537557487768568646478556"
 prediction = predict(model, history)
 action_map = {0: "石头", 1: "剪刀", 2: "布"}
 print(f"模型预测下一步动作: {action_map[prediction]}")
