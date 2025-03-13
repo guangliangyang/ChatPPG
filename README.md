@@ -1,5 +1,9 @@
-1. 前端框架使用了open-webui； 个性化修改在目录open-webui-modify
-2. ora微调使用了LlammaFactory, 做了一点针对乒乓球知识的LoRa； 个性化数据在目录LLama-factory
-3. 使用ollamma作为本地模型容器；如图    ![image](https://github.com/user-attachments/assets/dcca227b-4406-439b-9334-4c8b4f0734ef)
+Here's the English translation of your text:
 
-5. 在 LLM用function calling 调CV model来获取原始数据,CV统计数据交给LLM，然后集成在一起，返回对话。具体设置流程参考：https://drive.google.com/file/d/1vDDk703_aPP-gEuTbifo_vJGzbbuUqpf/view?usp=sharing
+1. The frontend framework used is **open-webui**; customized modifications can be found in the directory **open-webui-modify**.
+
+2. LoRA fine-tuning was done using **LlammaFactory**, with specific adjustments for table tennis knowledge; personalized data is stored in the directory **LLama-factory**.
+
+3. **ollama** is used as the container for local models, as shown in the figure.    ![image](https://github.com/user-attachments/assets/dcca227b-4406-439b-9334-4c8b4f0734ef)
+
+4. The LLM invokes a CV model via function calling to obtain the raw data. The statistical data from the CV model is then provided back to the LLM, integrated, and returned as part of the conversation. Refer to the detailed setup process below：https://drive.google.com/file/d/1vDDk703_aPP-gEuTbifo_vJGzbbuUqpf/view?usp=sharing
