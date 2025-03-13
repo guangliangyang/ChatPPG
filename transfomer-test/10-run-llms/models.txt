@@ -1,0 +1,31 @@
+conda activate torch_env
+export HF_ENDPOINT=https://hf-mirror.com
+cd /root/LLMsForTimeSeries-main/Time-LLM-exp
+accelerate config
+/root/LLMsForTimeSeries-main/Time-LLM-exp/ds_config_zero2.json
+bash ./scripts/train_script/TimeLLM_ETTh_xxx.sh
+
+
+#work
+huggingface-cli download --resume-download huggyllama/llama-7b --local-dir /root/autodl-tmp/llama-7b
+huggingface-cli download --resume-download mesolitica/llama-1b-hf-32768-fpf --local-dir /root/autodl-tmp/llama-1b-hf-32768-fpf
+huggingface-cli download --resume-download openai-community/gpt2 --local-dir /root/autodl-tmp/gpt2
+
+
+#
+huggingface-cli login
+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
+
+
+#gpt2
+Total number of parameters: 100013616
+Trainable parameters: 53540400
+
+
+#llama2-7b
+Total number of parameters: 379395784
+Trainable parameters: 45936328
+
+#32-1b
+Total number of parameters: 379395784
+Trainable parameters: 45936328

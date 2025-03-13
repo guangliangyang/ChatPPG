@@ -1,0 +1,66 @@
+=====================================================================
+#安装
+pip install accelerate
+pip install sentencepiece
+pip install protobuf
+
+#初始化配置文件
+accelerate config
+/root/LLMsForTimeSeries-main/Time-LLM-exp/ds_config_zero2.json
+#查看配置文件
+#vim /root/.cache/huggingface/accelerate/default_config. yaml
+#测试
+#accelerate test
+#accelerate test --config file /root/.cache/huggingface/accelerate/default_config.yaml
+
+
+
+pip install sentencepiece
+pip install protobuf
+
+
+
+对于初学者,配置时选择This machineNo distributed training其他全部默认即可.
+=====================================================================
+conda activate torch_env
+cd /root/LLMsForTimeSeries-main/Time-LLM-exp
+accelerate config
+/root/LLMsForTimeSeries-main/Time-LLM-exp/ds_config_zero2.json
+bash ./scripts/train_script/TimeLLM_ETTh1.sh
+python -m test.py
+
+#huggingface
+pip install transformers
+pip install datasets
+pip install huggingface_hub
+export HF_ENDPOINT=https://hf-mirror.com
+
+pip install -U huggingface_hub
+huggingface-cli login
+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
+hf-mirror.com
+
+huggingface-cli download huggyllama/llama-7b --local-dir /root/autodl-tmp/llms-models --repo-type model
+huggingface-cli download HuggingFaceH4/llama-3.2-1B --local-dir /root/autodl-tmp/llama-3.2-1B --repo-type model
+huggingface-cli download --resume-download gpt2 --local-dir /root/autodl-tmp/gpt2
+huggingface-cli download --resume-download huggyllama/llama-7b --local-dir /root/autodl-tmp/llama-7b
+huggingface-cli download deepseek-ai/DeepSeek-R1 --local-dir /root/autodl-tmp/DeepSeek-R1
+
+huggingface-cli download huggyllama/llama-7b/model-00001-of-00002.safetensors  --local-dir /root/autodl-tmp/  --repo-type model
+
+wget https://hf-mirror.com/huggyllama/llama-7b/blob/main/model-00001-of-00002.safetensors
+huggingface-cli download --resume-download  huggyllama/llama-7b model-00001-of-00002.safetensors
+
+
+
+==============================================
+gpt接口：cxy.chatyy.com
+免费公式识别接口：https://simpletex.cn/ai/latex_ocr?mode=braille
+
+bash ./scripts/train_script/TimeLLM_ETTh1.sh
+
+rm -rf ./checkpoints/*
+
+=====================================================================
+du -ah / | sort -rh | head -100
+

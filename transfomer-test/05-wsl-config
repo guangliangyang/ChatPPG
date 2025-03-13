@@ -1,0 +1,65 @@
+=================================================================
+wsl --unregister Ubuntu-22.04
+wsl -l -v
+wsl --install -d Ubuntu-22.04
+
+==================================
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io
+docker --version
+
+sudo usermod -aG docker $USER
+newgrp docker
+
+sudo systemctl enable docker
+sudo systemctl start docker
+
+==================================
+
+cd /home/ricky
+wget -O cg-client https://codewithgpu.ks3-cn-beijing.ksyuncs.com/cg-client
+chmod +x cg-client
+
+
+
+sudo ./cg-client
+http://localhost:2022/container?token=8edwlIfHjE39JdVW9bmlMZYzST2rlG
+
+==================================
+== NVIDIA/cuda-samples/CUDA12.1-Torch2.4.1-Python3.8.20-Transformers4.46
+
+conda activate torch_env
+python -c "import torch; print(torch.cuda.is_available())"
+
+cd LLMsForTimeSeries/Time-LLM-exp
+pip install -r requirements.txt
+pip install scikit-learn
+pip install pandas
+
+pip install matplotlib
+pip install statsmodels
+pip install einops
+
+pip install accelerate
+python -c "import accelerate; print(accelerate.__version__)"
+
+pip install deepspeed
+pip install mpi4py
+
+=================================================================
+==on ubuntu host
+sudo apt update
+sudo apt install -y nvidia-cuda-toolkit
+
+nvcc --version
+ls /usr/local/cuda/
+sudo reboot
+=================================================================
+wsl --list --verbose
+wsl --terminate Ubuntu
+
