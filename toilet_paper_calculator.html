@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卫生纸DDP成本计算器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        
+        .input-section {
+            padding: 40px;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+        }
+        
+        .result-section {
+            padding: 40px;
+            background: white;
+        }
+        
+        .section-title {
+            font-size: 1.4em;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-left: 4px solid #3498db;
+        }
+        
+        .input-group h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .input-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .input-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        label {
+            flex: 1;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        input {
+            width: 120px;
+            padding: 8px 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .unit {
+            margin-left: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+        }
+        
+        .result-card h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            opacity: 0.95;
+        }
+        
+        .final-cost {
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .breakdown {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .breakdown-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #2c3e50;
+        }
+        
+        .breakdown-label {
+            color: #555;
+        }
+        
+        .breakdown-value {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .weight-limit {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .volume-limit {
+            color: #f39c12;
+            font-weight: bold;
+        }
+        
+        .info-note {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #0c5460;
+            font-size: 14px;
+        }
+        
+        .warning-note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            color: #856404;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-section {
+                border-right: none;
+                border-bottom: 1px solid #e9ecef;
+            }
+            
+            .input-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .input-row input {
+                margin-top: 8px;
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>卫生纸DDP成本计算器</h1>
+            <p>中国出口卫生纸至奥克兰DDP成本分析</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="input-section">
+                <h2 class="section-title">参数设置</h2>
+                
+                <div class="input-group">
+                    <h3>40尺柜规格</h3>
+                    <div class="input-row">
+                        <label>内长:</label>
+                        <input type="number" id="containerLength" value="12.03" step="0.01">
+                        <span class="unit">米</span>
+                    </div>
+                    <div class="input-row">
+                        <label>内宽:</label>
+                        <input type="number" id="containerWidth" value="2.35" step="0.01">
+                        <span class="unit">米</span>
+                    </div>
+                    <div class="input-row">
+                        <label>内高:</label>
+                        <input type="number" id="containerHeight" value="2.39" step="0.01">
+                        <span class="unit">米</span>
+                    </div>
+                    <div class="input-row">
+                        <label>最大载重:</label>
+                        <input type="number" id="maxWeight" value="28000" step="100">
+                        <span class="unit">公斤</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <h3>卫生纸包装规格</h3>
+                    <div class="input-row">
+                        <label>每箱长度:</label>
+                        <input type="number" id="boxLength" value="49" step="0.1">
+                        <span class="unit">厘米</span>
+                    </div>
+                    <div class="input-row">
+                        <label>每箱宽度:</label>
+                        <input type="number" id="boxWidth" value="50" step="0.1">
+                        <span class="unit">厘米</span>
+                    </div>
+                    <div class="input-row">
+                        <label>每箱高度:</label>
+                        <input type="number" id="boxHeight" value="40" step="0.1">
+                        <span class="unit">厘米</span>
+                    </div>
+                    <div class="input-row">
+                        <label>每箱重量:</label>
+                        <input type="number" id="boxWeight" value="15" step="0.1">
+                        <span class="unit">公斤</span>
+                    </div>
+                    <div class="input-row">
+                        <label>每箱提数:</label>
+                        <input type="number" id="packagesPerBox" value="10" step="1">
+                        <span class="unit">提</span>
+                    </div>
+                    <div class="input-row">
+                        <label>每提卷数:</label>
+                        <input type="number" id="rollsPerPackage" value="10" step="1">
+                        <span class="unit">卷</span>
+                    </div>
+                    <div class="input-row">
+                        <label>装载效率:</label>
+                        <input type="number" id="loadingEfficiency" value="85" step="1">
+                        <span class="unit">%</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <h3>装载计算结果</h3>
+                    <div class="input-row">
+                        <label>按体积装载:</label>
+                        <span id="volumeBasedBoxes" class="breakdown-value">690 箱</span>
+                    </div>
+                    <div class="input-row">
+                        <label>按重量装载:</label>
+                        <span id="weightBasedBoxes" class="breakdown-value">1,866 箱</span>
+                    </div>
+                    <div class="input-row">
+                        <label>限制因素:</label>
+                        <span id="limitingFactor" class="breakdown-value weight-limit">体积限制</span>
+                    </div>
+                    <div class="input-row">
+                        <label>实际装载箱数:</label>
+                        <span id="actualBoxes" class="breakdown-value">586 箱</span>
+                    </div>
+                    <div class="input-row">
+                        <label>装载提数:</label>
+                        <span id="totalPackages" class="breakdown-value">5,860 提</span>
+                    </div>
+                    <div class="input-row">
+                        <label>每柜总卷数:</label>
+                        <span id="rollsPerContainer" class="breakdown-value">58,600 卷</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <h3>出口采购价</h3>
+                    <div class="input-row">
+                        <label>FOB价格:</label>
+                        <input type="number" id="fobPrice" value="0.26" step="0.01">
+                        <span class="unit">NZD/卷</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <h3>海运费</h3>
+                    <div class="input-row">
+                        <label>40尺柜海运费:</label>
+                        <input type="number" id="shippingCost" value="1700" step="50">
+                        <span class="unit">NZD</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <h3>到岸杂费</h3>
+                    <div class="input-row">
+                        <label>码头费:</label>
+                        <input type="number" id="terminalFee" value="860" step="10">
+                        <span class="unit">NZD</span>
+                    </div>
+                    <div class="input-row">
+                        <label>文件费:</label>
+                        <input type="number" id="documentFee" value="95" step="5">
+                        <span class="unit">NZD</span>
+                    </div>
+                    <div class="input-row">
+                        <label>安全费:</label>
+                        <input type="number" id="securityFee" value="35" step="5">
+                        <span class="unit">NZD</span>
+                    </div>
+                    <div class="input-row">
+                        <label>港口基础建设费:</label>
+                        <input type="number" id="portFee" value="120" step="10">
+                        <span class="unit">NZD</span>
+                    </div>
+                    <div class="input-row">
+                        <label>海关申报费:</label>
+                        <input type="number" id="customsFee" value="50" step="5">
+                        <span class="unit">NZD</span>
+                    </div>
+                    <div class="input-row">
+                        <label>清关代理费:</label>
+                        <input type="number" id="clearanceFee" value="200" step="10">
+                        <span class="unit">NZD</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <h3>本地费用</h3>
+                    <div class="input-row">
+                        <label>仓储租金:</label>
+                        <input type="number" id="warehouseRent" value="2400" step="100">
+                        <span class="unit">NZD/月</span>
+                    </div>
+                    <div class="input-row">
+                        <label>配送费:</label>
+                        <input type="number" id="deliveryCost" value="320" step="20">
+                        <span class="unit">NZD/月</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <h3>税费</h3>
+                    <div class="input-row">
+                        <label>关税税率:</label>
+                        <input type="number" id="dutyRate" value="0" step="0.1">
+                        <span class="unit">%</span>
+                    </div>
+                    <div class="input-row">
+                        <label>GST税率:</label>
+                        <input type="number" id="gstRate" value="15" step="0.1">
+                        <span class="unit">%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <h2 class="section-title">成本分析结果</h2>
+                
+                <div class="result-card">
+                    <h3>每卷最终成本 (含GST)</h3>
+                    <div class="final-cost" id="finalCost">NZ$0.347</div>
+                </div>
+                
+                <div class="breakdown">
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">集装箱体积:</span>
+                        <span class="breakdown-value" id="containerVolumeDisplay">67.3 m³</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">集装箱载重:</span>
+                        <span class="breakdown-value" id="containerWeightDisplay">28,000 公斤</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">每箱体积:</span>
+                        <span class="breakdown-value" id="boxVolumeDisplay">0.098 m³</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">每箱重量:</span>
+                        <span class="breakdown-value" id="boxWeightDisplay">15 公斤</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">限制因素:</span>
+                        <span class="breakdown-value" id="limitingFactorDisplay">体积限制</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">实际装载箱数:</span>
+                        <span class="breakdown-value" id="actualBoxesDisplay">586 箱</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">总重量:</span>
+                        <span class="breakdown-value" id="totalWeightDisplay">8,790 公斤</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">总提数:</span>
+                        <span class="breakdown-value" id="totalPackagesDisplay">5,860 提</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">每柜总卷数:</span>
+                        <span class="breakdown-value" id="rollsPerContainerDisplay">58,600 卷</span>
+                    </div>
+                    <hr style="margin: 15px 0;">
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">出口采购价:</span>
+                        <span class="breakdown-value" id="purchaseCostPerRoll">NZ$0.260</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">海运费:</span>
+                        <span class="breakdown-value" id="shippingCostPerRoll">NZ$0.029</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">港口及报关费:</span>
+                        <span class="breakdown-value" id="portCostPerRoll">NZ$0.022</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">仓储费:</span>
+                        <span class="breakdown-value" id="warehouseCostPerRoll">NZ$0.041</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">配送费:</span>
+                        <span class="breakdown-value" id="deliveryCostPerRoll">NZ$0.005</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">小计 (不含GST):</span>
+                        <span class="breakdown-value" id="subtotalCost">NZ$0.357</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">GST (15%):</span>
+                        <span class="breakdown-value" id="gstAmount">NZ$0.054</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">总计 (含GST):</span>
+                        <span class="breakdown-value" id="totalWithGst">NZ$0.411</span>
+                    </div>
+                </div>
+                
+                <div class="info-note">
+                    <strong>说明:</strong> GST可由注册进口商申请抵扣退回。实际进口成本以不含GST价格为准。关税归类4818.10.00，进口关税0%（免征）。
+                </div>
+                
+                <div class="warning-note" id="limitWarning" style="display: none;">
+                    <strong>装载限制提醒:</strong> 当前装载受到 <span id="limitType">体积</span> 限制。调整包装规格可能提高装载效率。
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function getValue(id, defaultValue) {
+            const element = document.getElementById(id);
+            return element ? (parseFloat(element.value) || defaultValue) : defaultValue;
+        }
+        
+        function setText(id, text) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = text;
+            }
+        }
+        
+        function calculateCosts() {
+            // 获取集装箱尺寸
+            const containerLength = getValue('containerLength', 12.03);
+            const containerWidth = getValue('containerWidth', 2.35);
+            const containerHeight = getValue('containerHeight', 2.39);
+            const maxWeight = getValue('maxWeight', 28000); // 公斤
+            
+            // 获取包装尺寸（转换为米）和重量
+            const boxLength = getValue('boxLength', 49) / 100;
+            const boxWidth = getValue('boxWidth', 50) / 100;
+            const boxHeight = getValue('boxHeight', 40) / 100;
+            const boxWeight = getValue('boxWeight', 15); // 公斤
+            const packagesPerBox = getValue('packagesPerBox', 10);
+            const rollsPerPackage = getValue('rollsPerPackage', 10);
+            const loadingEfficiency = getValue('loadingEfficiency', 85);
+            
+            // 计算体积限制下的装载量
+            const containerVolume = containerLength * containerWidth * containerHeight;
+            const boxVolume = boxLength * boxWidth * boxHeight;
+            const theoreticalVolumeBoxes = Math.floor(containerVolume / boxVolume);
+            
+            // 计算重量限制下的装载量
+            const theoreticalWeightBoxes = Math.floor(maxWeight / boxWeight);
+            
+            // 取较小值作为理论最大装载量，并应用装载效率
+            const theoreticalBoxes = Math.min(theoreticalVolumeBoxes, theoreticalWeightBoxes);
+            const actualBoxes = Math.floor(theoreticalBoxes * (loadingEfficiency / 100));
+            const totalPackages = actualBoxes * packagesPerBox;
+            const rollsPerContainer = totalPackages * rollsPerPackage;
+            const totalWeight = actualBoxes * boxWeight;
+            
+            // 确定限制因素
+            const isVolumeLimited = theoreticalVolumeBoxes < theoreticalWeightBoxes;
+            const limitingFactor = isVolumeLimited ? '体积限制' : '重量限制';
+            const limitClass = isVolumeLimited ? 'volume-limit' : 'weight-limit';
+            
+            // 更新装载量显示
+            setText('volumeBasedBoxes', `${theoreticalVolumeBoxes.toLocaleString()} 箱`);
+            setText('weightBasedBoxes', `${theoreticalWeightBoxes.toLocaleString()} 箱`);
+            setText('limitingFactor', limitingFactor);
+            setText('actualBoxes', `${actualBoxes.toLocaleString()} 箱`);
+            setText('totalPackages', `${totalPackages.toLocaleString()} 提`);
+            setText('rollsPerContainer', `${rollsPerContainer.toLocaleString()} 卷`);
+            
+            // 更新结果区域的装载量显示
+            setText('containerVolumeDisplay', `${containerVolume.toFixed(1)} m³`);
+            setText('containerWeightDisplay', `${maxWeight.toLocaleString()} 公斤`);
+            setText('boxVolumeDisplay', `${boxVolume.toFixed(6)} m³`);
+            setText('boxWeightDisplay', `${boxWeight} 公斤`);
+            setText('limitingFactorDisplay', limitingFactor);
+            setText('actualBoxesDisplay', `${actualBoxes.toLocaleString()} 箱`);
+            setText('totalWeightDisplay', `${totalWeight.toLocaleString()} 公斤`);
+            setText('totalPackagesDisplay', `${totalPackages.toLocaleString()} 提`);
+            setText('rollsPerContainerDisplay', `${rollsPerContainer.toLocaleString()} 卷`);
+            
+            // 更新限制因素的样式
+            const limitingFactorEl = document.getElementById('limitingFactor');
+            const limitingFactorDisplayEl = document.getElementById('limitingFactorDisplay');
+            if (limitingFactorEl) {
+                limitingFactorEl.className = `breakdown-value ${limitClass}`;
+            }
+            if (limitingFactorDisplayEl) {
+                limitingFactorDisplayEl.className = `breakdown-value ${limitClass}`;
+            }
+            
+            // 显示/隐藏警告信息
+            const warningEl = document.getElementById('limitWarning');
+            const limitTypeEl = document.getElementById('limitType');
+            if (warningEl && limitTypeEl) {
+                warningEl.style.display = 'block';
+                limitTypeEl.textContent = isVolumeLimited ? '体积' : '重量';
+            }
+            
+            // 获取其他输入值（全部NZD）
+            const fobPriceNZD = getValue('fobPrice', 0.26);
+            const shippingCost = getValue('shippingCost', 1700);
+            const terminalFee = getValue('terminalFee', 860);
+            const documentFee = getValue('documentFee', 95);
+            const securityFee = getValue('securityFee', 35);
+            const portFee = getValue('portFee', 120);
+            const customsFee = getValue('customsFee', 50);
+            const clearanceFee = getValue('clearanceFee', 200);
+            const warehouseRent = getValue('warehouseRent', 2400);
+            const deliveryCost = getValue('deliveryCost', 320);
+            const dutyRate = getValue('dutyRate', 0);
+            const gstRate = getValue('gstRate', 15);
+            
+            // 防止除零错误
+            const validRollsPerContainer = rollsPerContainer > 0 ? rollsPerContainer : 58600;
+            
+            // 计算各项成本（每卷）
+            const purchaseCostPerRoll = fobPriceNZD;
+            const shippingCostPerRoll = shippingCost / validRollsPerContainer;
+            const totalPortFees = terminalFee + documentFee + securityFee + portFee + customsFee + clearanceFee;
+            const portCostPerRoll = totalPortFees / validRollsPerContainer;
+            const warehouseCostPerRoll = warehouseRent / validRollsPerContainer;
+            const deliveryCostPerRoll = deliveryCost / validRollsPerContainer;
+            
+            // 小计（不含GST）
+            const subtotal = purchaseCostPerRoll + shippingCostPerRoll + portCostPerRoll + warehouseCostPerRoll + deliveryCostPerRoll;
+            
+            // 计算关税和GST
+            const dutyAmount = subtotal * (dutyRate / 100);
+            const taxableAmount = subtotal + dutyAmount;
+            const gstAmount = taxableAmount * (gstRate / 100);
+            const totalWithGst = taxableAmount + gstAmount;
+            
+            // 更新显示
+            setText('purchaseCostPerRoll', `NZ$${purchaseCostPerRoll.toFixed(3)}`);
+            setText('shippingCostPerRoll', `NZ$${shippingCostPerRoll.toFixed(4)}`);
+            setText('portCostPerRoll', `NZ$${portCostPerRoll.toFixed(4)}`);
+            setText('warehouseCostPerRoll', `NZ$${warehouseCostPerRoll.toFixed(4)}`);
+            setText('deliveryCostPerRoll', `NZ$${deliveryCostPerRoll.toFixed(4)}`);
+            setText('subtotalCost', `NZ$${subtotal.toFixed(3)}`);
+            setText('gstAmount', `NZ$${gstAmount.toFixed(3)}`);
+            setText('totalWithGst', `NZ$${totalWithGst.toFixed(3)}`);
+            setText('finalCost', `NZ$${totalWithGst.toFixed(3)}`);
+        }
+        
+        // 为所有输入框添加事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', calculateCosts);
+            });
+            
+            // 初始计算
+            calculateCosts();
+        });
+    </script>
+</body>
+</html>
